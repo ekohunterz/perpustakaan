@@ -19,7 +19,7 @@
         <div class="card">
             <div class="card-header d-flex justify-content-between">
                 <h4 class="card-title">Data Pegawai</h4>
-                @can('create staff')
+                @can('manage')
                     <button class="btn btn-primary me-4 btn-add" data-url="{{ route('staff.create') }}" type="button">Tambah
                         Data</button>
                 @endcan

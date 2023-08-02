@@ -12,7 +12,7 @@ class PeminjamanController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('can:create pengembalian peminjaman');;
+        $this->middleware(['role:staff']);
     }
 
     public function index()

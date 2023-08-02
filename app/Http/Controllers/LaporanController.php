@@ -12,7 +12,7 @@ class LaporanController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('can:read laporan');
+        $this->middleware(['role:staff|kepsek']);
     }
 
     public function index(HistoryDataTable $dataTable)
@@ -33,7 +33,12 @@ class LaporanController extends Controller
             $data = explode(' to ', $dateRange);
 
             $startDate = date('Y-m-d', strtotime($data[0]));
-            $endDate = date('Y-m-d', strtotime($data[1]));
+            if (isset($data[1])) {
+                $endDate = date('Y-m-d', strtotime($data[1]));
+                $riwayat = History::whereBetween('created_at', [$startDate, $endDate])->get();
+            } else {
+                $riwayat = History::whereDate('created_at', $startDate)->get();
+            }
             $riwayat = History::whereBetween('tgl_kembali', [$startDate, $endDate])
                 ->get();
         } else {

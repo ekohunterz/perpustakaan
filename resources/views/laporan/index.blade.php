@@ -30,7 +30,6 @@
                 </div>
             </div>
         </div>
-
         <div class="card">
             <div class="card-header d-flex justify-content-between">
                 <h4 class="card-title">Riwayat Peminjaman Buku</h4>

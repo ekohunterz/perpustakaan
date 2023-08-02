@@ -1,9 +1,12 @@
+@php
+    $setting = DB::table('settings')->first();
+@endphp
 <div id="sidebar">
     <div class="sidebar-wrapper active">
         <div class="sidebar-header position-relative">
             <div class="d-flex justify-content-between align-items-center">
-                <div class="logo">
-                    <a href="{{ route('dashboard') }}"><img src="{{ asset('img/svg/logo.svg') }}" srcset="" alt="Logo" /></a>
+                <div class="logo text-center">
+                    <a href="{{ route('dashboard') }}">Perpus</a>
                 </div>
                 <div class="theme-toggle d-flex gap-2 align-items-center mt-2">
                     <svg class="iconify iconify--system-uicons" role="img" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20" preserveAspectRatio="xMidYMid meet" viewBox="0 0 21 21">
@@ -47,7 +50,7 @@
                         <span>Data Buku</span>
                     </a>
                 </li>
-                @can('read')
+                @hasrole(['staff', 'kepsek', 'admin'])
                     <li class="sidebar-item {{ request()->is('kategori*') ? 'active' : '' }}">
                         <a class="sidebar-link" href="{{ route('kategori.index') }}">
                             <i class="bi bi-list"></i>
@@ -70,56 +73,72 @@
                             <li class="submenu-item {{ request()->is('member*') ? 'active' : '' }}">
                                 <a class="submenu-link " href="{{ route('member.index') }}">Member</a>
                             </li>
+                            @hasrole('admin')
+                                <li class="submenu-item {{ request()->is('staff*') ? 'active' : '' }}">
+                                    <a class="submenu-link" href="{{ route('staff.index') }}">Staff</a>
+                                </li>
 
-                            <li class="submenu-item {{ request()->is('staff*') ? 'active' : '' }}">
-                                <a class="submenu-link" href="{{ route('staff.index') }}">Staff</a>
-                            </li>
-
-                            <li class="submenu-item">
-                                <a class="submenu-link" href="extra-component-date-picker.html">Kepsek</a>
-                            </li>
+                                <li class="submenu-item {{ request()->is('kepsek*') ? 'active' : '' }}">
+                                    <a class="submenu-link" href="{{ route('kepsek.index') }}">Kepsek</a>
+                                </li>
+                            @endhasrole
                         </ul>
                     </li>
-                @endcan
+                @endhasrole
 
-                @canany(['read laporan', 'read pengembalian peminjaman'])
+                @hasrole('staff')
                     <li class="sidebar-title">Transaksi</li>
-                    @can('read pengembalian peminjaman')
-                        <li class="sidebar-item {{ request()->is('pinjam*') ? 'active' : '' }}">
-                            <a class="sidebar-link" href="{{ route('pinjam.index') }}">
-                                <i class="bi bi-file-earmark-medical-fill"></i>
-                                <span>Peminjaman Buku</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item {{ request()->is('pengembalian*') ? 'active' : '' }}">
-                            <a class="sidebar-link" href="{{ route('pengembalian.index') }}">
-                                <i class="bi bi-file-earmark-medical-fill"></i>
-                                <span>Pengembalian Buku</span>
-                            </a>
-                        </li>
-                    @endcan
-                    @can('read laporan')
-                        <li class="sidebar-item {{ request()->is('laporan*') ? 'active' : '' }}">
-                            <a class="sidebar-link" href="{{ route('laporan.index') }}">
-                                <i class="bi bi-file"></i>
-                                <span>Laporan</span>
-                            </a>
-                        </li>
-                    @endcan
-                @endcanany
+                    <li class="sidebar-item {{ request()->is('pinjam*') ? 'active' : '' }}">
+                        <a class="sidebar-link" href="{{ route('pinjam.index') }}">
+                            <i class="bi bi-file-earmark-medical-fill"></i>
+                            <span>Peminjaman Buku</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item {{ request()->is('pengembalian*') ? 'active' : '' }}">
+                        <a class="sidebar-link" href="{{ route('pengembalian.index') }}">
+                            <i class="bi bi-file-earmark-medical-fill"></i>
+                            <span>Pengembalian Buku</span>
+                        </a>
+                    </li>
+                @endhasrole
+                @hasrole(['staff', 'kepsek'])
+                    <li class="sidebar-title">Laporan</li>
+                    <li class="sidebar-item {{ request()->is('laporan') ? 'active' : '' }}">
+                        <a class="sidebar-link" href="{{ route('laporan.index') }}">
+                            <i class="bi bi-file"></i>
+                            <span>Laporan Peminjaman</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item {{ request()->is('laporan-pengunjung') ? 'active' : '' }}">
+                        <a class="sidebar-link" href="{{ route('pengunjung.laporan') }}">
+                            <i class="bi bi-clipboard2-check"></i>
+                            <span>Pengunjung</span>
+                        </a>
+                    </li>
+                @endhasrole
+
+                @hasrole('siswa')
+                    <li class="sidebar-title">Riwayat</li>
+                    <li class="sidebar-item {{ request()->is('riwayat-member') ? 'active' : '' }}">
+                        <a class="sidebar-link" href="{{ route('riwayat.index') }}">
+                            <i class="bi bi-clock-history"></i>
+                            <span>Riwayat Peminjaman</span>
+                        </a>
+                    </li>
+                @endhasrole
 
                 <li class="sidebar-title">Lainnya</li>
 
-                @can('update')
+                @hasrole(['staff', 'kepsek', 'admin'])
                     <li class="sidebar-item {{ request()->is('setting*') ? 'active' : '' }}">
                         <a class="sidebar-link" href="{{ route('setting.index') }}">
                             <i class="bi bi-gear"></i>
                             <span>Pengaturan</span>
                         </a>
                     </li>
-                @endcan
+                @endhasrole
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="https://github.com/zuramai/mazer#donation">
+                    <a class="sidebar-link" href="{{ route('about') }}">
                         <i class="bi bi-exclamation-circle"></i>
                         <span>About</span>
                     </a>

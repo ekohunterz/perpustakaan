@@ -6,22 +6,21 @@ use App\DataTables\MemberDataTable;
 use App\Models\Member;
 use App\Http\Requests\MemberRequest;
 use App\Models\Kelas;
+use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class MemberController extends Controller
 {
 
     public function __construct()
     {
-        $this->middleware('can:create')->only('create', 'store');
-        $this->middleware('can:update')->only('update', 'edit');
-        $this->middleware('can:delete')->only('destroy');
-        $this->middleware('can:read')->only('index');
+        $this->middleware(['role:admin|staff|kepsek', 'permission:view|manage'])->except('generateKodeMember');
     }
     /**
      * Display a listing of the resource.
@@ -186,5 +185,15 @@ class MemberController extends Controller
         } while (Member::where('kode_member', $uniqueCode)->exists());
 
         return response()->json(['kode_member' => $uniqueCode]);
+    }
+
+    public function cetak($id)
+    {
+        $member = Member::with('user')->findOrFail($id);
+        $setting = Setting::first();
+        return view('member.cetak', [
+            'member' => $member,
+            'setting' => $setting
+        ]);
     }
 }

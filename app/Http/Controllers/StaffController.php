@@ -16,10 +16,7 @@ class StaffController extends Controller
 
     public function __construct()
     {
-        $this->middleware('can:create staff')->only('create', 'store');
-        $this->middleware('can:update staff')->only('update', 'edit');
-        $this->middleware('can:delete staff')->only('destroy');
-        $this->middleware('can:read')->only('index');
+        $this->middleware(['role:admin', 'permission:view|manage']);
     }
 
     /**

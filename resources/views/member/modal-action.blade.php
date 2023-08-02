@@ -93,7 +93,7 @@
                 <div class="col-md-12 col-12">
                     <div class="form-group">
                         <label for="foto">Foto Member</label>
-                        <input class="form-control" id="foto" name="foto" type="file" image-crop-aspect-ratio="1:1" accept="image/*" onchange="previewImage(event)">
+                        <input class="form-control" id="foto" name="foto" type="file" accept="image/*" onchange="previewImage(event)">
 
                     </div>
                 </div>

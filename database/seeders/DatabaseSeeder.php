@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use App\Models\Book;
 use App\Models\Kelas;
+use App\Models\Visitor;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -25,8 +26,11 @@ class DatabaseSeeder extends Seeder
         $this->call([UserRoleSeeder::class]);
         $this->call([MemberSeeder::class]);
         $this->call([StaffSeeder::class]);
+        $this->call([KepsekSeeder::class]);
+        $this->call([SettingSeeder::class]);
 
         Book::factory(25)->create();
+        Visitor::factory(25)->create();
         $this->call([CategorySeeder::class]);
 
         Kelas::create([

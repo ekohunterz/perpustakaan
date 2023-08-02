@@ -18,7 +18,7 @@
         <div class="card">
             <div class="card-header d-flex justify-content-between">
                 <h4 class="card-title">Data Kategori</h4>
-                @can('create')
+                @can('manage')
                     <button class="btn btn-primary me-4 btn-add" data-url="{{ route('kategori.create') }}" type="button">Tambah
                         Data</button>
                 @endcan
@@ -31,8 +31,7 @@
             </div>
         </div>
 
-        <div class="modal fade" id="modalAction" aria-labelledby="modalAction" aria-hidden="true" tabindex="-1"
-            style="display: none;">
+        <div class="modal fade" id="modalAction" aria-labelledby="modalAction" aria-hidden="true" tabindex="-1" style="display: none;">
             <div class="modal-dialog modal-lg" role="document">
 
             </div>

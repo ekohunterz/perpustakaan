@@ -15,18 +15,21 @@
 @endsection
 
 @section('content')
+    @php
+        $setting = DB::table('settings')->first();
+    @endphp
     <section class="section">
         <div class="alert alert-success alert-dismissible fade show">
             <h4 class="alert-heading">Catatan Perihal Peminjaman Buku</h4>
             <p>Beberapa hal yang dapat di sampaikan kepada siswa mengenai peraturan dalam peminjaman buku
-                di perpustakaan SD 6 Muhammadiyah Palembang.</p>
+                di perpustakaan {{ $setting->nama_sekolah }}.</p>
             <hr>
             <ul class="list">
                 <li><span>Siswa Di Wajibkan Mendaftarkan diri sebagai Anggota Perpustakaan Untuk Bisa
                         Melaukan Peminjaman Buku</span></li>
-                <li><span>Tarif Denda Yaitu Rp. 1000 / Hari</span></li>
-
-                <li><span>Apabila Buku Hilang Maka Siswa Diberlakukan denda Rp.50.000 / Buku</span></li>
+                <li><span>Tarif Denda Jika Terlambat Mengembalikan Buku Yaitu Rp.{{ $setting->denda_terlambat }} / Hari</span></li>
+                <li><span>Apabila Buku Rusak Maka Siswa Diberlakukan denda Rp.{{ $setting->denda_rusak }} / Buku</span></li>
+                <li><span>Apabila Buku Hilang Maka Siswa Diberlakukan denda Rp.{{ $setting->denda_hilang }} / Buku</span></li>
             </ul>
             <button class="btn-close" data-bs-dismiss="alert" type="button" aria-label="Close"></button>
         </div>

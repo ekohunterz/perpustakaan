@@ -86,10 +86,15 @@
 
     </div>
     <div class="modal-footer">
+        <a class="btn btn-warning"href="{{ route('cetak.kartu.member', ['memberId' => $member->id]) }}" target="_blank">
+            <i class="bx bx-x d-block d-sm-none"></i>
+            <span class="d-none d-sm-block">Cetak Kartu Member</span>
+        </a>
         <button class="btn btn-light-secondary" data-bs-dismiss="modal" type="button">
             <i class="bx bx-x d-block d-sm-none"></i>
             <span class="d-none d-sm-block">Close</span>
         </button>
+
     </div>
 </div>
 

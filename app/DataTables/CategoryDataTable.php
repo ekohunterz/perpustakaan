@@ -32,10 +32,8 @@ class CategoryDataTable extends DataTable
             })
             ->addColumn('action', function ($row) {
                 $action = '';
-                if (Gate::allows('update')) {
+                if (Gate::allows('manage')) {
                     $action = ' <button type="button" data-url="' . route('kategori.edit', $row->id) . '" data-type="edit" class="btn icon btn-primary action"><i class="bi bi-pencil"></i></button>';
-                }
-                if (Gate::allows('delete')) {
                     $action .= ' <button type="button" data-url="' . route('kategori.destroy', $row->id) . '" data-type="delete" class="btn icon btn-danger action"><i class="bi bi-trash"></i></button>';
                 }
                 return $action;
@@ -87,7 +85,7 @@ class CategoryDataTable extends DataTable
         ];
 
         // Cek izin pengguna untuk melakukan tindakan
-        if (Gate::allows('update', 'delete')) {
+        if (Gate::allows('manage')) {
             $columns[] = Column::computed('action')
                 ->exportable(false)
                 ->printable(false)

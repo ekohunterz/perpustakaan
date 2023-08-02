@@ -18,7 +18,7 @@
         <div class="card">
             <div class="card-header d-flex justify-content-between">
                 <h4 class="card-title">Data Kelas</h4>
-                @can('create')
+                @can('manage')
                     <button class="btn btn-primary me-4 btn-add" data-url="{{ route('kelas.create') }}" type="button">Tambah
                         Data</button>
                 @endcan

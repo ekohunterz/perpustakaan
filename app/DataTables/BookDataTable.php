@@ -27,10 +27,8 @@ class BookDataTable extends DataTable
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
                 $action = '<button type="button" data-url="' . route('buku.show', $row->id) . '" data-type="detail" class="btn icon btn-success action"><i class="bi bi-eye"></i></button>';
-                if (Gate::allows('update')) {
+                if (Gate::allows('manage')) {
                     $action .= ' <button type="button" data-url="' . route('buku.edit', $row->id) . '" data-type="edit" class="btn icon btn-primary action"><i class="bi bi-pencil"></i></button>';
-                }
-                if (Gate::allows('delete')) {
                     $action .= ' <button type="button" data-url="' . route('buku.destroy', $row->id) . '" data-type="delete" class="btn icon btn-danger action"><i class="bi bi-trash"></i></button>';
                 }
                 return $action;

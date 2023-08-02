@@ -18,9 +18,8 @@ class BookController extends Controller
 
     public function __construct()
     {
-        $this->middleware('can:create')->only('create', 'store');
-        $this->middleware('can:update')->only('update', 'edit');
-        $this->middleware('can:delete')->only('destroy');
+        $this->middleware(['role:siswa|kepsek|admin|staff'])->only('index', 'show');
+        $this->middleware(['role:admin|staff'])->only('create', 'store', 'edit', 'update', 'destroy');
     }
 
 

@@ -11,10 +11,7 @@ class CategoryController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('can:create')->only('create', 'store');
-        $this->middleware('can:read')->only('index');
-        $this->middleware('can:update')->only('update', 'edit');
-        $this->middleware('can:delete')->only('destroy');
+        $this->middleware(['role:admin|kepsek|staff', 'permission:view|manage']);
     }
     /**
      * Display a listing of the resource.

@@ -132,6 +132,10 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'current_password' => [
+            'required' => 'Password lama harus diisi.',
+            'current_password' => 'Password lama tidak cocok.',
+        ],
     ],
 
     /*
@@ -171,5 +175,7 @@ return [
         'kode_buku' => 'Kode Buku',
         'kondisi_buku_baik' => 'Kondisi Buku Baik',
         'kondisi_buku_rusak' => 'Kondisi Buku Rusak',
+        'current_password' => 'Password Lama',
+        'password_confirmation' => 'Konfirmasi Password'
     ],
 ];

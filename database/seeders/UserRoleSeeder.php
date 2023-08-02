@@ -54,31 +54,14 @@ class UserRoleSeeder extends Seeder
             $role_kepsek = Role::create(['name' => 'kepsek']);
             $role_siswa = Role::create(['name' => 'siswa']);
 
-            $permission = Permission::create(['name' => 'read']);
-            $permission = Permission::create(['name' => 'create']);
-            $permission = Permission::create(['name' => 'update']);
-            $permission = Permission::create(['name' => 'delete']);
+            $permission = Permission::create(['name' => 'view']);
+            $permission = Permission::create(['name' => 'manage']);
 
-            $permission = Permission::create(['name' => 'create staff']);
-            $permission = Permission::create(['name' => 'update staff']);
-            $permission = Permission::create(['name' => 'delete staff']);
-            $permission = Permission::create(['name' => 'create pengembalian peminjaman']);
-            $permission = Permission::create(['name' => 'read pengembalian peminjaman']);
-            $permission = Permission::create(['name' => 'read laporan']);
-            // $permission = Permission::create(['name' => 'read category']);
-            // $permission = Permission::create(['name' => 'create category']);
-            // $permission = Permission::create(['name' => 'update category']);
-            // $permission = Permission::create(['name' => 'delete category']);
 
-            // $role_admin->givePermissionTo(['read book', 'create book', 'update book', 'delete book', 'read category', 'create category', 'update category', 'delete category']);
-            // $role_staff->givePermissionTo(['read book', 'create book', 'update book', 'delete book', 'read category', 'create category', 'update category', 'delete category']);
-            // $role_kepsek->givePermissionTo(['read book', 'read category']);
-            // $role_siswa->givePermissionTo(['read book']);
-
-            $role_admin->givePermissionTo(['read', 'create', 'update', 'delete',  'delete staff', 'create staff', 'update staff']);
-            $role_staff->givePermissionTo(['read', 'create', 'update', 'delete', 'read laporan', 'create pengembalian peminjaman', 'read pengembalian peminjaman']);
-            $role_kepsek->givePermissionTo(['read', 'read laporan']);
-            // $role_siswa->givePermissionTo(['read']);
+            $role_admin->givePermissionTo(['view', 'manage']);
+            $role_staff->givePermissionTo(['view', 'manage']);
+            $role_kepsek->givePermissionTo(['view']);
+            $role_siswa->givePermissionTo(['view']);
 
 
 
