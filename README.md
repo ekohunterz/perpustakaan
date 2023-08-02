@@ -82,7 +82,7 @@ Cara Instal:
 6. Buat database pada mysql untuk aplikasi ini
 7. Setting database pada file ```.env```
 8. Jalankan perintah ```php artisan migrate --seed``` untuk membuat tabel-tabel database.
-9. Jalankan perintah ```php artisan serve``` untuk mengisi data awal.
+9. Jalankan perintah ```php artisan serve``` dan ```npm run dev``` untuk menjalankan aplikasi.
 10. Akses aplikasi melalui browser Anda.
 
 
