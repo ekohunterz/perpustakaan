@@ -67,13 +67,13 @@
                                             <input class="form-control" id="email" name="email" type="email" value="{{ $setting->email }}" placeholder="Email Sekolah">
                                         </div>
                                     </div>
-                                    <div class="col-md-4 col-8">
+                                    <div class="col-md-4  col-sm-12">
                                         <div class="form-group">
                                             <label for="logo">Logo</label>
                                             <input class="form-control" id="logo" name="logo" type="file" placeholder="Logo" onchange="previewImage(event)">
                                         </div>
                                     </div>
-                                    <div class="col-md-2 col-4">
+                                    <div class="col-md-2  col-sm-12">
                                         <div class="form-group">
                                             <label for="logo"></label>
                                             <div class="form-group">
@@ -93,7 +93,7 @@
                 </div>
             </div>
 
-            <div class="col-6">
+            <div class="col-lg-6">
                 <div class="card">
                     <div class="card-header">
                         <h4>Pengaturan Denda</h4>

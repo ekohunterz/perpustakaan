@@ -16,56 +16,64 @@
     <div class="row h-100">
         <div class="col-lg-5 col-12">
             <div id="auth-left">
-                <div class="auth-logo" style="margin-bottom: 30px;">
-                    <a href="index.html"><img src="./assets/compiled/svg/logo.svg" alt="Logo" /></a>
-                </div>
-                <h3>Perpustakaan {{ $setting->nama_sekolah }}</h3>
-                <p class="text-muted">
+                @if ($setting->logo)
+                    <div class="mb-3 text-center">
+                        <img class="avatar-xl" src="{{ asset('storage/logos/' . $setting->logo) }}" style="max-width: 100px">
+                    </div>
+                @else
+                    <div class="auth-logo" style="margin-bottom: 30px;">
+                        <a href="/"><img src="./assets/compiled/svg/logo.svg" alt="Logo" /></a>
+                    </div>
+                @endif
+
+                <h3 class="text-center">Perpustakaan {{ $setting->nama_sekolah }}</h3>
+                <p class="text-center text-muted">
                     Silakan isi data pengunjung.
                 </p>
-                <form id="formAction" action="{{ route('pengunjung.store') }}" method="POST">
-                    @csrf
-                    <div class="row mb-2 form-group px-3">
-                        <div class="form-check col-6">
-                            <input class="form-check-input" id="nonMember" name="flexRadioDefault" type="radio" value="non-member" checked>
-                            <label class="form-check-label" for="nonMember">
-                                Non-member
-                            </label>
+                <div class="mx-auto">
+                    <form id="formAction" action="{{ route('pengunjung.store') }}" method="POST">
+                        @csrf
+                        <div class="row mb-2 form-group px-3">
+                            <div class="form-check col-6">
+                                <input class="form-check-input" id="nonMember" name="flexRadioDefault" type="radio" value="non-member" checked>
+                                <label class="form-check-label" for="nonMember">
+                                    Non-member
+                                </label>
+                            </div>
+                            <div class="form-check col-6">
+                                <input class="form-check-input" id="member" name="flexRadioDefault" type="radio" value="member">
+                                <label class="form-check-label" for="member">
+                                    Member
+                                </label>
+                            </div>
                         </div>
-                        <div class="form-check col-6">
-                            <input class="form-check-input" id="member" name="flexRadioDefault" type="radio" value="member">
-                            <label class="form-check-label" for="member">
-                                Member
-                            </label>
+                        <div class="form-group">
+                            <input class="form-control form-control-lg" name="nama" type="text" placeholder="Nama" />
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <input class="form-control form-control-lg" name="nama" type="text" placeholder="Nama" />
-                    </div>
-                    <div class="form-group">
-                        <select class="form-control form-control-lg" name="kelas">
-                            <option value="" hidden>--Pilih Kelas--</option>
-                            @foreach ($kelas as $kelas)
-                                <option value="{{ $kelas->nama_kelas }}">{{ $kelas->nama_kelas }}</option>
-                            @endforeach
-
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <input class="form-control form-control-lg" name="nis" type="text" placeholder="NIS" />
-                    </div>
-                    <div class="form-group">
-                        <select class="form-control form-control-lg" name="keperluan">
-                            <option value="" hidden>--Pilih Keperluan--</option>
-                            <option value="Baca Buku">Baca Buku</option>
-                            <option value="Pinjam Buku">Pinjam Buku</option>
-                            <option value="Lainnya">Lainnya</option>
-                        </select>
-                    </div>
-                    <button class="btn btn-primary btn-block btn-lg shadow-lg mt-5">
-                        Simpan
-                    </button>
-                </form>
+                        <div class="form-group">
+                            <select class="form-control form-control-lg" name="kelas">
+                                <option value="" hidden>--Pilih Kelas--</option>
+                                @foreach ($kelas as $kelasItem)
+                                    <option value="{{ $kelasItem->nama_kelas }}">{{ $kelasItem->nama_kelas }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control form-control-lg" name="nis" type="text" placeholder="NIS" />
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control form-control-lg" name="keperluan">
+                                <option value="" hidden>--Pilih Keperluan--</option>
+                                <option value="Baca Buku">Baca Buku</option>
+                                <option value="Pinjam Buku">Pinjam Buku</option>
+                                <option value="Lainnya">Lainnya</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary btn-block btn-lg shadow-lg mt-5">
+                            Simpan
+                        </button>
+                    </form>
+                </div>
                 <div class="text-center mt-5 text-sm">
                     <p class="text-gray-600">
                         Ingin mendaftar member?
@@ -92,8 +100,6 @@
 @endsection
 
 @push('js')
-    <script src="{{ asset('assets/static/js/components/dark.js') }}"></script>
-    <script src="{{ asset('assets/static/js/pages/horizontal-layout.js') }}"></script>
     <script src="{{ asset('assets/extensions/jquery/jquery.min.js') }}"></script>
     <script src="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.js"></script>
     <script src="{{ asset('assets/static/js/pages/datatables.js') }}"></script>

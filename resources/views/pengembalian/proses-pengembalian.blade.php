@@ -7,10 +7,10 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-3">
+                            <div class="col-lg-3">
                                 <img class="img-thumbnail mt-3 mx-auto d-block"alt="Preview" id="preview" src="{{ $member->user->foto ? asset('/storage/foto/' . $member->user->foto) : asset('/assets/compiled/jpg/img01.jpg') }}" style="max-width: 100%; height: 100px;">
                             </div>
-                            <div class="col-6">
+                            <div class="col-lg-6">
                                 <table class="border-0">
                                     <tbody>
                                         <tr>
@@ -36,7 +36,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="col-3">
+                            <div class="col-lg-3">
                                 <div class="mt-3 d-flex justify-content-center" id="qrcode"></div>
                                 <span class="card-title d-flex justify-content-center">{{ $member->kode_member }}</span>
                             </div>

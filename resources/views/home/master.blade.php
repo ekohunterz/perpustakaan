@@ -36,8 +36,11 @@
                     </div>
                 </div>
                 <nav class="main-navbar">
-                    <div class="container" style="margin-right: 1.5rem">
-                        <div class="d-flex justify-content-end">
+                    <div class="container">
+                        <div class="d-flex justify-content-between">
+                            <a class="navbar-brand" href="/">
+                                <img src="{{ $setting->logo ? asset('storage/logos/' . $setting->logo) : asset('/assets/compiled/jpg/img01.jpg') }}" alt="Brand Logo" height="40" width="auto">
+                            </a>
                             <ul>
                                 <li class="menu-item {{ Request::is('/') ? 'active' : '' }}">
                                     <a class="menu-link" href="/">
@@ -81,6 +84,8 @@
         <!-- Footer -->
 
     </div>
+    <script src="{{ asset('assets/static/js/components/dark.js') }}"></script>
+    <script src="{{ asset('assets/static/js/pages/horizontal-layout.js') }}"></script>
     @stack('js')
 </body>
 
