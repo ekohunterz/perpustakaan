@@ -7,6 +7,7 @@ use App\Models\History;
 use App\Models\Member;
 use App\Models\Pinjam;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PeminjamanController extends Controller
 {
@@ -33,80 +34,84 @@ class PeminjamanController extends Controller
         return view('pinjam.proses-pinjam', compact('member', 'buku'));
     }
 
+
+
     public function store(Request $request)
     {
-        $member = Pinjam::where('member_id', $request->member)->get();
-        $count = $member->count();
+        try {
+            DB::transaction(function () use ($request) {
+                $member = Pinjam::where('member_id', $request->member)->get();
+                $count = $member->count();
 
-        if ($count > 0) {
+                if ($count > 0) {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Maaf member masih memiliki peminjaman buku'
+                    ]);
+                }
+
+                // Validasi data
+                $request->validate([
+                    'buku1' => 'required',
+                    'kondisi_buku1' => 'required',
+                    'tgl_kembali' => 'required',
+                ]);
+
+                $tgl_kembali = $request->tgl_kembali;
+                $books = [$request->buku1, $request->buku2, $request->buku3];
+                $kondisi_buku = [$request->kondisi_buku1, $request->kondisi_buku2, $request->kondisi_buku3];
+
+                // Loop untuk mengolah setiap buku yang dipinjam
+                foreach ($books as $index => $book_id) {
+                    if (empty($book_id)) {
+                        continue; // Skip jika buku tidak dipilih
+                    }
+
+                    // Validasi kondisi buku jika buku dipilih
+                    $request->validate([
+                        'kondisi_buku' . ($index + 1) => 'required',
+                    ]);
+
+                    // Kurangi stok buku sesuai kondisi
+                    $book = Book::find($book_id);
+                    if ($kondisi_buku[$index] == "Baik") {
+                        if ($book->kondisi_buku_baik != 0) {
+                            $book->decrement('kondisi_buku_baik');
+                        } else {
+                            throw new \Exception('Stok Buku Sedang Kosong');
+                        }
+                    } else {
+                        if ($book->kondisi_buku_rusak != 0) {
+                            $book->decrement('kondisi_buku_rusak');
+                        } else {
+                            throw new \Exception('Stok Buku Sedang Kosong');
+                        }
+                    }
+
+                    // Buat peminjaman
+                    $pinjam = Pinjam::create([
+                        'member_id' => $request->member,
+                        'book_id' => $book_id,
+                        'tgl_pinjam' => date('Y-m-d'),
+                        'tgl_kembali' => $tgl_kembali,
+                        'kondisi_buku' => $kondisi_buku[$index],
+                    ]);
+
+                    History::create([
+                        'pinjam_id' => $pinjam->id,
+                        'member_id' => $request->member,
+                        'book_id' => $book_id,
+                        'tgl_pinjam' => date('Y-m-d'),
+                        'batas_tgl_kembali' => $tgl_kembali,
+                        'kondisi_buku_saat_dipinjam' => $kondisi_buku[$index],
+                        'status' => 'Pinjam'
+                    ]);
+                }
+            });
+        } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Maaf member masih memiliki peminjaman buku'
-            ]);
-        }
-
-        // Validasi data
-        $request->validate([
-            'buku1' => 'required',
-            'kondisi_buku1' => 'required',
-            'tgl_kembali' => 'required',
-        ]);
-
-        $tgl_kembali = $request->tgl_kembali;
-        $books = [$request->buku1, $request->buku2, $request->buku3];
-        $kondisi_buku = [$request->kondisi_buku1, $request->kondisi_buku2, $request->kondisi_buku3];
-
-        // Loop untuk mengolah setiap buku yang dipinjam
-        foreach ($books as $index => $book_id) {
-            if (empty($book_id)) {
-                continue; // Skip jika buku tidak dipilih
-            }
-
-            // Validasi kondisi buku jika buku dipilih
-            $request->validate([
-                'kondisi_buku' . ($index + 1) => 'required',
-            ]);
-
-            // Kurangi stok buku sesuai kondisi
-            $book = Book::find($book_id);
-            if ($kondisi_buku[$index] == "Baik") {
-                if ($book->kondisi_buku_baik != 0) {
-                    $book->decrement('kondisi_buku_baik');
-                } else {
-                    return response()->json([
-                        'status' => 'error',
-                        'message' => 'Stok Buku Sedang Kosong'
-                    ]);
-                }
-            } else {
-                if ($book->kondisi_buku_rusak != 0) {
-                    $book->decrement('kondisi_buku_rusak');
-                } else {
-                    return response()->json([
-                        'status' => 'error',
-                        'message' => 'Stok Buku Sedang Kosong'
-                    ]);
-                }
-            }
-
-            // Buat peminjaman
-            $pinjam = Pinjam::create([
-                'member_id' => $request->member,
-                'book_id' => $book_id,
-                'tgl_pinjam' => date('Y-m-d'),
-                'tgl_kembali' => $tgl_kembali,
-                'kondisi_buku' => $kondisi_buku[$index],
-            ]);
-
-
-            History::create([
-                'pinjam_id' => $pinjam->id,
-                'member_id' => $request->member,
-                'book_id' => $book_id,
-                'tgl_pinjam' => date('Y-m-d'),
-                'batas_tgl_kembali' => $tgl_kembali,
-                'kondisi_buku_saat_dipinjam' => $kondisi_buku[$index],
-                'status' => 'Pinjam'
+                'message' => $e->getMessage()
             ]);
         }
 
